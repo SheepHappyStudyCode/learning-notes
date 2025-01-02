@@ -1,7 +1,7 @@
-# git常用命令整理
+# git 学习笔记
 ## 基本原理
 
-![4c3afd13fcc2fba20f3f63c96cadbbd9](img\4c3afd13fcc2fba20f3f63c96cadbbd9.webp)
+![4c3afd13fcc2fba20f3f63c96cadbbd9](https://sheephappy-blog-picture.oss-cn-beijing.aliyuncs.com/20250101214703771.webp)
 
 
 
@@ -41,6 +41,8 @@
 5. 将其他分支合并到本分支
 
 ​	`git merge 其他分支`
+
+6. 将本分支合并到其它分支：`git rebase 分支名`
 
 6. 建立本地分支和远程分支的联系：
 
@@ -88,17 +90,14 @@
 
 1. 克隆仓库
 `git clone 仓库地址`
-
 2. 连接远程仓库并命名为origin
 `git remote add origin 远程仓管地址`
-
 3. 查看远程仓库地址
 `git remote -v`
-
 4. 向远程仓库推送
-`git push origin`
+`git push origin 分支名`
 
-
+​	p.s. 加 `-u` 参数能直接将本地分支与远程分支相关联，例如：`git push -u origin master`
 
 
 

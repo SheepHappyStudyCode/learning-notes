@@ -10,7 +10,7 @@ CPU占用率突然升高问题
 
 ## JVM是什么？
 
-![image-20241206205204695](asset/image-20241206205204695-17334895285361.png)
+![image-20241206205204695](https://sheephappy-blog-picture.oss-cn-beijing.aliyuncs.com/20241231224314709.png)
 
 
 JVM实质上是一个应用程序，负责将**Java字节码文件**读入内存。
@@ -40,7 +40,7 @@ JVM实质上是一个应用程序，负责将**Java字节码文件**读入内存
 1. 魔术：最前面四个字节是`ca fe ba be`，用来校验该文件是否是字节码文件。
 1. 主副版本号： JDK 1.2之后，副版本号 = 主版本号 - 44
 
-![image-20241206213522884](asset/image-20241206213522884-17334921241142.png) 
+![image-20241206213522884](https://sheephappy-blog-picture.oss-cn-beijing.aliyuncs.com/20241231224326649.png) 
 
 ### 常量池
 
@@ -75,7 +75,7 @@ i = i++;
 
 用字节码进行分析
 
-![image-20241207193602946](asset/image-20241207193602946-17335713655421.png)  
+![image-20241207193602946](https://sheephappy-blog-picture.oss-cn-beijing.aliyuncs.com/20241231224332322.png)  
 
 #### javap -v 命令
 
@@ -96,7 +96,7 @@ ps. 如果 jar 包需要先使用 jar -xvf 命令解压
 
 ## 类的生命周期
 
-![image-20241207223840836](asset/image-20241207223840836-17335823248712.png)
+![image-20241207223840836](https://sheephappy-blog-picture.oss-cn-beijing.aliyuncs.com/20241231224336684.png)
 
 “家宴准备了西式菜”
 
@@ -200,7 +200,7 @@ ps. 如果 jar 包需要先使用 jar -xvf 命令解压
 
 4. jdbc案例：jdbc的驱动是由应用程序类加载器加载的。
 
-![image-20241208210625836](asset/image-20241208210625836.png)
+![image-20241208210625836](https://sheephappy-blog-picture.oss-cn-beijing.aliyuncs.com/20241231224347862.png)
 #### 使用 Arthas 实现热部署
 1. 将字节码信息反编译为源文件：`jad --source-only <类的全限定名>  > 指定目录/文件名.java`
 1. 得到该类的classloader的哈希值：`sc -d 类的全限定名`
@@ -223,7 +223,7 @@ jdk9 引入了 module 的概念
 
 分为**线程不共享**数据和**线程共享**数据
 
-![image-20241209142206557](asset/image-20241209142206557.png)
+![image-20241209142206557](https://sheephappy-blog-picture.oss-cn-beijing.aliyuncs.com/20241231224350244.png)
 
 
 ### 程序计数器 pc
@@ -390,7 +390,7 @@ G1的堆被划分为等大的区域
 
 回收过程：
 
-![image-20241210214020980](asset/image-20241210214020980.png)
+![image-20241210214020980](https://sheephappy-blog-picture.oss-cn-beijing.aliyuncs.com/20241231224354287.png)
 
 
 

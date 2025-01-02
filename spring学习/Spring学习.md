@@ -410,3 +410,12 @@ public class Test {
 
 - 由于使用继承的方式，因此无法代理 `final` 类和 `final` 方法。
 - 生成的代理类会比 JDK 动态代理更大，性能上也可能稍微逊色。
+
+
+
+## BeanFactory、FactoryBean 和 ObjectFactory
+
+1. BeanFactory：Spring 用于**创建 Bean 对象的底层容器接口**，负责创建 Bean 对象，可以延迟 Bean 对象的生成，解决一些循环依赖。
+2. FactoryBean ：Spring 给开发者提供的一个接口，用于**自定义复杂的 Bean 对象**。
+3. ObjectFactory：Spring 框架中的一个更为通用的接口（函数式接口），只提供一种创建对象的方式，主要用于延迟 Bean 对象的生成。
+
