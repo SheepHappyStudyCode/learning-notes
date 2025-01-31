@@ -3,7 +3,7 @@
 1. 安装jdk
 步骤：1. 搜索Oracle官网，点击产品，选择较老版本的JDK进行下载(最新版本的JDK的稳定性不好，容易出bug）2.安装时的路径**不能有中文和空格**。
 2. 安装IDE
-下载IDEA,有社区版和最终版，如果用到JavaEE的开发就下载最终版。
+	下载IDEA,有社区版和最终版，如果用到JavaEE的开发就下载最终版。
 
 	
 ## 新建项目阶段
@@ -11,12 +11,10 @@
 2. package命名规范：一般是企业域名倒着写 ，例如黑马网站域名为:www.itheima.com，package命名为com.itheima.hello
 3. 导入模块：导入模块要选择iml文件
 
-![导入模块](/imgs/2023-10-31/3FAmZAYB2TDALT1C.png)
-
 ## Java基础学习
 ### 1. Java的数据类型
 - **基本数据类型**
-![输入图片说明](/imgs/2023-11-16/NO0MIfC3SGMobBVD.png)
+  ![输入图片说明](/imgs/2023-11-16/NO0MIfC3SGMobBVD.png)
 - **引用数据类型**
 		1. String类型
 		2. Scanner
@@ -124,7 +122,7 @@ else
 	2. 私有方法
 	3. 静态方法
 - 接口的多继承：一个接口可以继承多个接口。
-注意事项：
+	注意事项：
 	1. 一个接口继承多个接口，若接口存在方法签名冲突，不支持多继承。
 	2. 一个类实现多个接口，若多个接口存在方法 签名冲突，不支持多实现。
 	3. 一个子类继承了父类，又实现了接口，父类中和接口中有同名的默认方法，实现类会优先使用父类的。
@@ -151,7 +149,7 @@ else
 	  枚举对象的名称（枚举对象是常量）
 	  成员变量、方法......
 }
-```  
+ ```
 - 特点：
 	1. 构造器一定私有。
 	2. 枚举会提供一些其他的API接口。
@@ -176,12 +174,12 @@ public class MyArray<E>
 - 泛型不支持基本数据类型，只能支持对象类型。
 ### 8. 常用API
 1. Object类
-常用方法:
+	常用方法:
 	```Java
 	protected Object clone() //返回一个对象的克隆
-
+	
 	boolean equals(Object obj) //判断两个对象的内容是否相等
-
+	
 	String toString() //返回一个对象的字符串表示
 	```
 2. Objects类（工具类）
@@ -193,7 +191,7 @@ public class MyArray<E>
 	 - 将字符串转换为数字。（使用 **valueOf()** 函数）
 4. 字符串相关的API
 	1. StringBuilder:  对字符串的操作效率比较高。
-	常用方法：
+		常用方法：
 		- ` StringBuilder append(任意数据类型) `
 		- ` StringBuilder reverse()`
 		- `String toString()`
@@ -208,7 +206,7 @@ public class MyArray<E>
 	1. `exit()`方法：退出虚拟机。
 	2. `currentTimeMillis()`方法：返回系统时间
 7. Runtime：代表程序运行的环境。
-常用方法：
+	常用方法：
 	1. getRuntime()：通过该类方法拿到单例对象。
 	2. availableProcessors()：返回虚拟机能够使用的处理器数。
 	3. totalMemory()：返回虚拟机的内存总量。
@@ -249,7 +247,7 @@ public class MyArray<E>
 		2. ZoneDateTime：时区时间。
 	- Instant：时间戳
 			作用：记录代码的执行时间。
-			
+		
 	- DateTimeFormatter：格式化器，用于时间的格式化、解析。(线程安全）
 	- 其他补充
 		1. Period：用于计算两个LocalDate对象相差的年数、月数和天数。
@@ -540,7 +538,7 @@ size(), clear(), isEmpty(), get(Object key), remove(Object key), containsKey(Obj
 		1. Before, After：用于修饰实例方法，在每个测试方法前/后执行。
 		2. BeforeClass, AfterClass：在所有测试方法前/后只执行一次。
 2. 反射（Reflection）：加载类，并允许以编程的方式解剖类中的各种成分（成员变量、方法、构造器等）
-作用：
+	作用：
 	1. 基本作用：可以得到一个类的全部成分然后操作。
 	2. 可以破坏封装性。
 	3. **最重要的用途：适合做Java的框架，基本上，主流的框架都会基于反射设计出一些通用的功能。**
@@ -560,3 +558,293 @@ size(), clear(), isEmpty(), get(Object key), remove(Object key), containsKey(Obj
 	- 应用场景：做框架。
 4. 动态代理设计模式
 
+## 面试题
+
+### 接口和抽象类有什么区别
+
+### 从设计思想上
+
+接口是自**顶向下**设计的，一般是先定义接口，在编写实现类。
+
+抽象类是**自底向上**设计的，一般是一些类的共性抽取出来形成一个抽象类，方便其他类继承
+
+### 从包含的内容上
+
+接口只包含抽象方法和常量（ JDK 8 之后可以有默认的实现方法）
+
+抽象类不仅可以有抽象方法和常量，也可以有普通的成员变量和成员方法。
+
+### 其他
+
+一个类可以**实现多个接口**
+
+但只能**继承一个父类**
+
+## JDK 动态代理和 CGLIB 动态代理有什么区别
+
+JDK 动态代理只能代理接口，CGLIB 动态代理**基于继承**，可以代理任何类。
+
+### JDK 动态代理
+
+#### 代码示例：
+
+```java
+public interface UserService {
+    void addUser();
+    void deleteUser();
+}
+
+public class UserServiceImpl implements UserService {
+    @Override
+    public void addUser() {
+        System.out.println("Adding user");
+    }
+
+    @Override
+    public void deleteUser() {
+        System.out.println("Deleting user");
+    }
+}
+
+public class DynamicProxy implements InvocationHandler {
+    private Object target;
+
+    public DynamicProxy(Object target) {
+        this.target = target;
+    }
+
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        System.out.println("Before method " + method.getName());
+        Object result = method.invoke(target, args);
+        System.out.println("After method " + method.getName());
+        return result;
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        UserService userService = new UserServiceImpl();
+        DynamicProxy dynamicProxy = new DynamicProxy(userService);
+
+        UserService proxy = (UserService) Proxy.newProxyInstance(
+            userService.getClass().getClassLoader(),
+            userService.getClass().getInterfaces(),
+            dynamicProxy
+        );
+
+        proxy.addUser();
+        proxy.deleteUser();
+    }
+}
+
+```
+
+**优点：**
+
+1. 代理对象必须实现接口，符合 Java 的面向接口编程思想。
+
+2. 可以很方便地为接口方法添加增强逻辑。
+
+**缺点：**
+
+被代理类必须实现接口，不能代理普通类
+
+### **CGLIB 动态代理**
+
+CGLIB（Code Generation Library）是一个**基于继承**的动态代理库，Spring 在没有接口的情况下，会使用 CGLIB 来生成代理类。CGLIB 动态代理是通过生成目标类的子类来实现代理的，代理类会覆盖父类的方法，来实现方法增强。
+
+#### 代码示例
+
+```java
+public class UserService {
+    public void addUser() {
+        System.out.println("Adding user");
+    }
+
+    public void deleteUser() {
+        System.out.println("Deleting user");
+    }
+}
+
+public class MethodInterceptorImpl implements MethodInterceptor {
+    @Override
+    public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
+        System.out.println("Before method " + method.getName());
+        Object result = proxy.invokeSuper(obj, args);  // 调用父类方法
+        System.out.println("After method " + method.getName());
+        return result;
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        UserService userService = new UserService();
+
+        Enhancer enhancer = new Enhancer();
+        enhancer.setSuperclass(UserService.class);
+        enhancer.setCallback(new MethodInterceptorImpl());
+
+        UserService proxy = (UserService) enhancer.create();
+        proxy.addUser();
+        proxy.deleteUser();
+    }
+}
+
+```
+
+**优点：**
+
+- 不要求目标类实现接口，可以直接对普通类进行代理。
+- 灵活性较高，能够代理任何类。
+
+**缺点**：
+
+- 由于使用继承的方式，因此无法代理 `final` 类和 `final` 方法。
+- 生成的代理类会比 JDK 动态代理更大，性能上也可能稍微逊色。
+
+## HashMap 的原理
+
+Java 中的 HashMap 的底层数据结构为**哈希表**，支持快速的插入和查找操作，使用**链表**和**红黑树**解决哈希冲突。
+
+### 哈希表
+
+哈希表本质上是一个数组，通过对键做哈希运算并取模映射到数组上的一个下标，理想情况下存取的时间复杂度都为O（1）。
+
+### 解决哈希冲突
+
+一开始出现哈希冲突时，HashMap 是在原地建立链表来解决哈希冲突，当链表长度达到 8 时，会将链表转换为一颗红黑树，当红黑树的节点个数小于等于 6 时，红黑树会退化为链表。
+
+### 扩容
+
+HashMap 默认的负载因子是 0.75，初始哈希表的长度为 16，所以当哈希表的元素个数超过容量的四分之三（比如12）时，会触发扩容，容量乘以 2，并且重新分配元素的位置，以后每次元素个数超过负载因子乘以容量后，都会进行扩容。
+
+（PS：频繁扩容会影响性能，所以如果知道元素的个数范围可以一开始就给 HashMap 设置容量）
+
+#### Java8 对扩容的优化
+
+首先限制哈希表容量为 **2 的整数幂**，这样可以就可以通过 `(哈希表的长度 - 1) & 哈希值 ` （相当于取模）得到元素的索引值。
+
+然后会发现如果扩容后的元素的位置要么保持不变，要么是原来的位置加上旧数组的长度，这样就只需要重新分配部分元素的位置，且新位置可以一次性全部计算出来。
+
+## Java 中有哪些集合类
+
+首先可以划分为两类，第一类是以 Collection 为首的集合，其下主要分为 List 、Set 和 Queue；第二类是以 Map 为首的集合。
+
+![e67a90e1d0e846edbcbed319fbf2b4db](https://img-blog.csdnimg.cn/e67a90e1d0e846edbcbed319fbf2b4db.png)
+
+### List
+
+常用的实现类为 ArrayList、LinkedList。前者是顺序表，后者为链表。
+
+### Set
+
+不重复集合，存取效率高。主要实现类有 HashSet（无序，底层为哈希表）和 TreeSet（有序，底层为红黑树）
+
+###  Map
+
+键值对集合，主要实现类有 HashMap（类似于 HashSet）和 TreeMap（类似于 TreeSet）
+
+## Java 线程池原理
+
+Java 线程池是一种池化技术，用于创建和管理一组线程，避免线程的频繁创建和销毁导致的性能开销，主要由**线程、任务队列和拒绝策略**组成。用户可以将任务提交给线程池，让线程池异步处理，也可以设置一个定时任务，让线程池定时执行。
+
+### 线程
+
+主要关心两个参数，**核心线程数**和**最大线程数**，除了**核心线程**其他的线程称为**救急线程**，它们的区别是核心线程数一旦创建就不会销毁，而救急线程在没有任务的一段时间后会自动销毁。
+
+> 救急线程什么时候会创建？
+
+一般当任务队列已满，且核心线程都在忙碌时，这是如果提交了一个任务，就会创建一个救急线程去执行该任务。
+
+### 任务队列
+
+本质是一个**阻塞队列**，能够确保任务的提交和执行是线程安全的，一般会有一个最大长度的限制。
+
+### 拒绝策略
+
+当任务队列已满，线程数达到最大线程数且都在执行任务时，这时提交任务会触发拒绝策略。
+
+**拒绝策略**可以按是否丢弃任务分成**两类**。
+
+#### 不丢弃任务
+
+`CallerRunsPolicy`：提交任务的线程会执行该任务。好处是不会丢失任务，坏处是会阻塞用户线程。
+
+#### 丢弃任务
+
+1. `AbortPolicy`：抛出异常（默认实现）
+2. `DiscardOldestPolicy`：丢弃最早的任务
+
+## 常用的并发工具类
+
+### Concurrent开头的类
+例如 ConcurrentHashMap
+线程安全的 HashMap，通过最小粒度的加锁来提高并发度。
+
+### 原子类
+例如 `AtomicInteger` 、`AtomicLong`这些，通过 CAS 来实现并发控制，无锁控制，并发度高。
+
+原子累加器：`LongAdder`。考虑到了缓存，在累加时并发度高。
+
+### 线程同步工具
+
+1. `CountdownLatch`：倒计时器
+2. `CyclicBarrier`：适用于所有的线程都达到一个点后继续执行
+3. `Symaphore`：信号量，用一个数字代表资源的数量，提供P和V两种原子操作去消耗和恢复资源。
+
+### 阻塞队列
+
+1. BlockingQueue：基于生产者-消费者模型，可以作为线程池的任务队列。
+
+## CAS
+
+cas（Compare And Swap） 是**基于硬件**的一个原子操作，它会先比较内存中的数据是否是预期值，如果是预期值就更改为目标值，否则操作失败，确保多线程环境下只有一个线程能 Set 成功，实现并发控制。
+
+### 优点
+
+无锁控制，并发度高
+
+### 缺点
+
+1. 无法解决 **ABA 问题**：即原数据被修改过，只是最后修改为最初的值，这时候 CAS 还是可以成功的。（可以给数据加版本号解决）
+2. 自旋操作，即使**失败也会不断重试**，如果并发度高会浪费 CPU 资源
+3. 仅适用于**单个变量**的更新
+
+## AQS 原理
+
+Abstract Queued Synchronizer，抽象同步队列，是**实现同步器的基础框架**（使用了**模板方法**设计模式），很多并发工具包里面的类如 ReentrantLock、CountdownLatch的实现 都基于 AQS。
+
+它里面封装了一个 unsafe 对象，主要通过维护一个共享资源状态（State）和等待队列来控制线程对并发资源的访问。
+
+当线程准备访问共享资源时，会先用 unsafe 对象的 CAS 方法去修改 State，如果修改成功，能访问资源，否则该线程被加入到等待队列。
+
+## Synchronized 和 ReentrantLock
+
+两者都是 Java 实现同步控制的方法，前者是一个关键字，后者是 JUC 工具包的一个类。
+
+**区别：**
+
+Synchronized 能实现基本的同步机制，但不支持超时，非公平，不可中断和多条件，不需要手动释放锁，适用于简单的线程同步的场景。
+
+ReentrantLock 提供超时，重入，非公平，不可打断和**多条件变量**等功能，更加灵活。需要手动释放锁，适用于较复杂的场景。
+
+> 很多年前 Synchronized 的性能不如 ReentrantLock，现在性能几乎一致。
+
+**why？**
+
+Synchronized 使用的是操作系统提供的管程同步机制，每次调用都需要使用系统调用，所以性能较差，而 ReentrantLock 可以绕过操作系统直接使用硬件提供的 CAS 功能，所以性能更好。但 Synchronized  在 JDK1.6 之后进行了优化，引入了偏向锁、轻量级锁、锁粗化和锁消除等功能（JVM 底层实现，程序员感受不到），所以两者性能就接近了。
+
+## Volatile
+
+是 Java 的一个关键字，用于保证共享变量的**可见性**和相关指令的**有序性**。
+
+### 可见性
+
+线程访问共享变量时，一般会在自己的局部空间（cpu 缓存）生成一个副本，如果不加 volatile 关键字，那么可能无法感知到全局变量发生的变化，进而导致错误，通过加 volatile 关键字，线程访问该变量时每次都会去内存访问该变量的最新值。
+
+### 有序性
+
+JTI 在编译时会进行一些优化，将一些指令重排序，如果某个共享变量的指令重排序，在多线程下很有可能会引起问题，通过加上 volatile 关键字可以在该变量前加入写屏障，在后面加入读屏障，保证相关指令执行的正确性。
+
+（PS：volatile 只能实现可见性和有序性，并不能保证原子性。不过可以和 CAS 操作搭配实现并发控制，例如 AQS 里面的 state 变量就加入了 volatile 修饰。）
