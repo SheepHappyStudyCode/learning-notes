@@ -1,7 +1,7 @@
 # git 学习笔记
 ## 基本原理
 
-![4c3afd13fcc2fba20f3f63c96cadbbd9](https://sheephappy-blog-picture.oss-cn-beijing.aliyuncs.com/20250101214703771.webp)
+![4c3afd13fcc2fba20f3f63c96cadbbd9](https://gitee.com/SheeepHappy/blog-pic/raw/master/20250323120507814.webp)
 
 
 
