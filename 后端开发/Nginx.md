@@ -1,4 +1,4 @@
-﻿# Nginx
+﻿﻿# Nginx
 ## 1 安装部署
 使用docker
 ## 2 基本使用
@@ -21,4 +21,35 @@
 ### 2.8 高可用场景及解决方案
 设置一个主服务器和一个备用机，二者用keepalive进行通信，同时有一个虚拟ip在两台服务器进行切换。
 ### 2.9 Https证书配置
+
+## 3 常用配置
+
+```nginx
+location / {
+  try_files $uri $uri/index.html /index.html;
+}
+
+location /api {
+        proxy_pass http://127.0.0.1:8123;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_buffering off;
+        proxy_set_header Connection "";
+    }
+    
+    location /api/ws {
+        proxy_pass http://127.0.0.1:8123;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_buffering off;
+        proxy_read_timeout 86400s;
+    }
+```
+
+
 

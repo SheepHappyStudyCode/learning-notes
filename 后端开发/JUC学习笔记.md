@@ -30,7 +30,7 @@ synchronized(lock) {
 
 ## 线程的六种状态
 
-![image-20241224200228019](asset/image-20241224200228019-17350417494001.png)
+![image-20241224200228019](https://gitee.com/SheeepHappy/blog-pic/raw/master/20250331152235112.png)
 
 waiting 和 blocked 的区别和联系：
 
@@ -45,11 +45,11 @@ waiting 和 blocked 的区别和联系：
 
 
 
-![image-20241225090413379](asset/image-20241225090413379-17350886548722.png)
+![image-20241225090413379](https://gitee.com/SheeepHappy/blog-pic/raw/master/20250331152235113.png)
 
 ### 线程池参数
 
-![image-20241225100051889](asset/image-20241225100051889-17350920531373.png)
+![image-20241225100051889](https://gitee.com/SheeepHappy/blog-pic/raw/master/20250331152235114.png)
 
 核心线程数
 
@@ -705,3 +705,7 @@ public class ThreadPool {
 
 ```
 
+## 源码解读
+
+1. [终于有人把 AQS 说清楚了！万字详解一、AQS 是啥？有啥用？ 一、AQS 是啥？有啥用？ 在 Java 并发编程的世 - 掘金](https://juejin.cn/post/7454026458250166272?searchId=20250331152418C8845647EF989E700C5F)
+2. [从ReentrantLock的实现看AQS的原理及应用 - 美团技术团队](https://tech.meituan.com/2019/12/05/aqs-theory-and-apply.html)
