@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿# Dubbo
+﻿﻿﻿﻿﻿﻿# Dubbo
 ## 1 分布式系统中的相关概念
 ### 1.1 大型互联网项目架构目标
 1. 传统项目和互联网项目的区别：用户基数不同，用户忍耐度不同
@@ -18,7 +18,7 @@
 ## 2 Dubbo概述
 Dubbo是阿里巴巴开源的一个高性能、轻量级的JavaRPC框架。
 
-![image-20240610112246543](img\image-20240610112246543.png)
+![image-20240610112246543](https://gitee.com/SheeepHappy/blog-pic/raw/master/20250430160539414.png)
 
 ## 3 Dubbo快速入门
 ### 3.1 实现步骤
@@ -47,7 +47,7 @@ Dubbo是阿里巴巴开源的一个高性能、轻量级的JavaRPC框架。
 
 ### 4.2 高级特性
 #### 4.2.1 序列化
-1. 引入：![image-20240614103004251](img\image-20240614103004251.png)
+1. 引入：![image-20240614103004251](https://gitee.com/SheeepHappy/blog-pic/raw/master/20250430160539415.png)
 2. 实现序列化：
    - dubbo内部已经实现了序列化和反序列化
    - 实体类需要实现Serializable接口

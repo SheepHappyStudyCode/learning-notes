@@ -1,6 +1,6 @@
 # Spring 学习笔记
 
-## 1 IOC
+## 1 控制反转 IOC
 
 ### 1.1 含义和作用
 
@@ -196,11 +196,11 @@ public class LogInterceptor {
 ## Bean 的生命周期
 1. 大概可以分为五个阶段：创建实例 --> 属性注入 --> 初始化 --> 使用 --> 销毁
 
-![image-20241219231748602](asset/image-20241219231748602.png)
+![image-20241219231748602](https://gitee.com/SheeepHappy/blog-pic/raw/master/20250409105159449.png)
 
 2. 在生成 Bean 对象的时候，spring 暴露出了很多扩展点，所以生命周期可以扩展出更多的阶段。
 
-![image-20241219231930392](asset/image-20241219231930392.png)
+![image-20241219231930392](https://gitee.com/SheeepHappy/blog-pic/raw/master/20250409105159451.png)
 
 
 ## Spring 如何解决循环依赖
@@ -239,7 +239,7 @@ public class LogInterceptor {
 
 
 
-## 如何解决循环依赖
+## 开发者如何解决循环依赖
 
 ### 1. 尽量使用 setter 注入或者字段注入
 
@@ -419,3 +419,20 @@ public class Test {
 2. FactoryBean ：Spring 给开发者提供的一个接口，用于**自定义复杂的 Bean 对象**。
 3. ObjectFactory：Spring 框架中的一个更为通用的接口（函数式接口），只提供一种创建对象的方式，主要用于延迟 Bean 对象的生成。
 
+## Spring 使用了哪些设计模式
+
+**工厂模式**： BeanFactory和ApplicationContext作为Spring的核心容器，负责创建和管理Bean对象。
+
+**单例模式**：Spring默认的Bean作用域就是单例，确保一个类只有一个实例。
+
+**代理模式**：Spring AOP的实现基础，通过JDK动态代理或CGLIB实现横切关注点的分离。
+
+**模板方法**模式：如JdbcTemplate、HibernateTemplate等，定义操作的骨架，具体实现由子类完成。
+
+观察者模式：Spring的事件机制，如ApplicationEvent和ApplicationListener。
+
+适配器模式：Spring MVC中的HandlerAdapter，允许多种控制器形式。
+
+装饰器模式：在Spring中的各种Wrapper类。
+
+**策略模式**：如Resource接口的不同实现策略（ClassPathResource等）。

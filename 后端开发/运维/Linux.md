@@ -1,4 +1,4 @@
-﻿# Linux
+﻿﻿﻿﻿# Linux
 ## 1 Linux基础知识
 ### 1.1 虚拟机快照
 作用：通过快照将当前虚拟机的状态保存下来，以后可以通过快照将虚拟机恢复到之前的状态。
@@ -101,3 +101,111 @@
 
 ## 5 firewall 常见命令整理
 
+## 6 常见命令整理
+
+### 查看本地端口
+
+Linux系统作为**客户端发起连接**时可自动分配的本地端口范围
+
+```linux
+sysctl -a | grep ip_local_port_range
+```
+
+### AWK
+
+`awk`：一个强大的文本处理命令
+
+语法：`awk [选项参数] 'script' 文件名`
+
+使用示例：
+
+```shell
+# 统计nginx日志的流量、请求数、各状态码数量
+
+BEGIN {
+  print "统计nginx日志数据"
+}{
+  total_size += $10
+  req++
+  status_code[$9]++
+}END{
+  printf "Total Requests: %d\nTotal Size: %.2f MB\n", req, total_size/1024/1024
+  print "[Status Code]  Count"
+  for(code in status_code){
+    printf "     %-9s  %d\n", code, status_code[code]
+  }
+}
+
+================================================
+上面是 awk 脚本内容，下面是命令行
+================================================
+awk -f nginx_monitor.awk access.log
+```
+
+### 查看内存的命令
+
+使用 GUI 界面查看
+
+查看`/proc/meminfo`这个虚拟文件
+
+```shell
+$ cat /proc/meminfo
+MemTotal:        1798504 kB
+MemFree:          113748 kB
+MemAvailable:     666276 kB
+Buffers:          120648 kB
+Cached:           527024 kB
+SwapCached:        17392 kB
+Active:           718292 kB
+Inactive:         790892 kB
+Active(anon):     388508 kB
+Inactive(anon):   473628 kB
+Active(file):     329784 kB
+Inactive(file):   317264 kB
+Unevictable:           0 kB
+Mlocked:               0 kB
+SwapTotal:       1049596 kB
+SwapFree:         975000 kB
+Dirty:                28 kB
+Writeback:             0 kB
+AnonPages:        859260 kB
+Mapped:            65936 kB
+Shmem:               624 kB
+Slab:              97008 kB
+SReclaimable:      72656 kB
+SUnreclaim:        24352 kB
+KernelStack:        4736 kB
+PageTables:        12780 kB
+NFS_Unstable:          0 kB
+Bounce:                0 kB
+WritebackTmp:          0 kB
+CommitLimit:     1948848 kB
+Committed_AS:    1971280 kB
+VmallocTotal:   34359738367 kB
+VmallocUsed:        9636 kB
+VmallocChunk:   34359700716 kB
+Percpu:              960 kB
+HardwareCorrupted:     0 kB
+AnonHugePages:     55296 kB
+CmaTotal:              0 kB
+CmaFree:               0 kB
+HugePages_Total:       0
+HugePages_Free:        0
+HugePages_Rsvd:        0
+HugePages_Surp:        0
+Hugepagesize:       2048 kB
+DirectMap4k:      101048 kB
+DirectMap2M:     1912832 kB
+DirectMap1G:           0 kB
+```
+
+`free`命令
+
+```shell
+$ free
+              total        used        free      shared  buff/cache   available
+Mem:        1798504      964892      113236         624      720376      665812
+Swap:       1049596       74596      975000
+```
+
+`vmstat`

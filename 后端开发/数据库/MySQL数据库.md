@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿# MySQL数据库
+﻿﻿﻿﻿﻿﻿# MySQL数据库
 ## 函数
 1. 字符串函数
 	- concat(s1, s2, s3)：字符串拼接
@@ -263,3 +263,22 @@ PARTITION BY RANGE (YEAR(order_date)) (
 - `p2021` 分区存储所有 `order_date` 为 2021 年的订单。
 - `p2022` 分区存储所有 `order_date` 为 2022 年的订单。
 - `p2023` 分区存储所有 `order_date` 为 2023 年的订单。
+
+## 索引
+
+MySQL 一张表建立 3-5 个索引比较合适
+
+### 全文索引
+
+如何添加全文索引（支持中文）
+
+```sql
+ALTER TABLE sys_article ADD FULLTEXT INDEX idx_article_text (title, summary) WITH PARSER ngram;
+```
+
+查询中如何使用全文索引
+
+```sql
+SELECT * FROM sys_article WHERE MATCH(title, summary) AGAINST('关键字');
+```
+

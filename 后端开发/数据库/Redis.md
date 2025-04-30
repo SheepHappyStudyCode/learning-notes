@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿# Redis
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿# Redis
 ## 1 Redis入门知识
 1. Redis简介：远程词典服务器，是一种**基于内存**的**键值型**NoSQL数据库。
 2. NoSQL数据库：非关系型数据库。
@@ -250,3 +250,142 @@ Redis 采用的是一种**单线程事件驱动模型**，使得可以用少量�
 #### 讲解事件驱动模型的好文
 
 [事件驱动架构在 vivo 内容平台的实践本文前半部分重点阐述事件驱动架构的定义和重要概念，以及架构设计的场景和原因分析， - 掘金](https://juejin.cn/post/7056577036688556062)
+
+
+
+## Redisson 源码
+
+### 1 RedissonRateLimiter 源码
+
+`rateLimiter.trySetRate(rateType, rate, duration);`
+
+```java
+return this.commandExecutor.evalWriteNoRetryAsync(
+    this.getRawName(),             // 限流器的名称
+    LongCodec.INSTANCE,            // 使用的编解码器
+    RedisCommands.EVAL_BOOLEAN,    // Redis命令类型(执行Lua脚本并返回布尔值)
+    
+    // Lua脚本内容
+    "redis.call('hsetnx', KEYS[1], 'rate', ARGV[1]);" +                // 设置速率
+    "redis.call('hsetnx', KEYS[1], 'interval', ARGV[2]);" +            // 设置时间间隔
+    "local res = redis.call('hsetnx', KEYS[1], 'type', ARGV[3]);" +    // 设置限流类型
+    "if res == 1 and tonumber(ARGV[4]) > 0 then " +                    // 如果是首次设置且过期时间>0
+    "   redis.call('pexpire', KEYS[1], ARGV[4]); " +                   // 设置过期时间
+    "end; " +
+    "return res;",                                                     // 返回设置类型的结果
+    
+    // 参数列表
+    Collections.singletonList(this.getRawName()),                      // KEYS数组
+    new Object[]{rate, rateInterval.toMillis(), type.ordinal(), timeToLive.toMillis()} // ARGV数组
+);
+```
+
+`rateLimiter.tryAcquire()`
+
+```java
+private <T> RFuture<T> tryAcquireAsync(RedisCommand<T> command, Long value) {
+    // 生成随机ID，用于在Redis中唯一标识此次请求
+    byte[] random = this.getServiceManager().generateIdArray();
+    
+    // 执行Redis Lua脚本进行令牌获取逻辑
+    return this.commandExecutor.evalWriteAsync(
+        this.getRawName(),       // 限流器的名称
+        LongCodec.INSTANCE,      // 编解码器
+        command,                 // Redis命令
+        
+        // Lua脚本内容 (我会分段解释)
+        "local rate = redis.call('hget', KEYS[1], 'rate');" +
+        "local interval = redis.call('hget', KEYS[1], 'interval');" +
+        "local type = redis.call('hget', KEYS[1], 'type');" +
+        // 确保限流器已初始化
+        "assert(rate ~= false and interval ~= false and type ~= false, 'RateLimiter is not initialized')" +
+        
+        // 根据限流类型选择不同的键（全局模式或每客户端模式）
+        "local valueName = KEYS[2];" +
+        "local permitsName = KEYS[4];" +
+        "if type == '1' then " +
+            "valueName = KEYS[3];" +
+            "permitsName = KEYS[5];" +
+        "end;" +
+        
+        // 确保请求的令牌数不超过定义的速率
+        "assert(tonumber(rate) >= tonumber(ARGV[1]), 'Requested permits amount cannot exceed defined rate');" +
+        
+        // 获取当前可用令牌数量
+        "local currentValue = redis.call('get', valueName);" +
+        "local res;" +
+        
+        // 如果已有令牌计数器存在
+        "if currentValue ~= false then " +
+            // 清理过期的令牌记录并释放这些令牌
+            "local expiredValues = redis.call('zrangebyscore', permitsName, 0, tonumber(ARGV[2]) - interval);" +
+            "local released = 0;" +
+            "for i, v in ipairs(expiredValues) do " +
+                "local random, permits = struct.unpack('Bc0I', v);" +
+                "released = released + permits;" +
+            "end;" +
+            
+            // 如果有过期令牌被释放
+            "if released > 0 then " +
+                // 移除过期的令牌记录
+                "redis.call('zremrangebyscore', permitsName, 0, tonumber(ARGV[2]) - interval);" +
+                
+                // 更新可用令牌数，确保不超过最大速率
+                "if tonumber(currentValue) + released > tonumber(rate) then " +
+                    "local values = redis.call('zrange', permitsName, 0, -1);" +
+                    "local used = 0;" +
+                    "for i, v in ipairs(values) do " +
+                        "local random, permits = struct.unpack('Bc0I', v);" +
+                        "used = used + permits;" +
+                    "end;" +
+                    "currentValue = tonumber(rate) - used;" +
+                "else " +
+                    "currentValue = tonumber(currentValue) + released;" +
+                "end;" +
+                "redis.call('set', valueName, currentValue);" +
+            "end;" +
+            
+            // 判断是否有足够的令牌可用
+            "if tonumber(currentValue) < tonumber(ARGV[1]) then " +
+                // 令牌不足，计算需要等待的时间
+                "local firstValue = redis.call('zrange', permitsName, 0, 0, 'withscores');" +
+                "res = 3 + interval - (tonumber(ARGV[2]) - tonumber(firstValue[2]));" +
+            "else " +
+                // 令牌充足，记录本次获取，并减少可用令牌
+                "redis.call('zadd', permitsName, ARGV[2], struct.pack('Bc0I', string.len(ARGV[3]), ARGV[3], ARGV[1]));" +
+                "redis.call('decrby', valueName, ARGV[1]);" +
+                "res = nil;" +
+            "end;" +
+        "else " +
+            // 如果是首次使用，初始化计数器
+            "redis.call('set', valueName, rate);" +
+            "redis.call('zadd', permitsName, ARGV[2], struct.pack('Bc0I', string.len(ARGV[3]), ARGV[3], ARGV[1]));" +
+            "redis.call('decrby', valueName, ARGV[1]);" +
+            "res = nil;" +
+        "end;" +
+        
+        // 同步过期时间
+        "local ttl = redis.call('pttl', KEYS[1]);" +
+        "if ttl > 0 then " +
+            "redis.call('pexpire', valueName, ttl);" +
+            "redis.call('pexpire', permitsName, ttl);" +
+        "end;" +
+        "return res;",
+        
+        // 参数列表
+        Arrays.asList(
+            this.getRawName(),          // KEYS[1]: 限流器名称
+            this.getValueName(),        // KEYS[2]: 全局模式下的值名称
+            this.getClientValueName(),  // KEYS[3]: 客户端模式下的值名称
+            this.getPermitsName(),      // KEYS[4]: 全局模式下的权限名称
+            this.getClientPermitsName() // KEYS[5]: 客户端模式下的权限名称
+        ),
+        new Object[]{
+            value,                    // ARGV[1]: 请求的令牌数量
+            System.currentTimeMillis(), // ARGV[2]: 当前时间戳
+            random                    // ARGV[3]: 随机ID
+        }
+    );
+}
+```
+

@@ -19,23 +19,23 @@
 	- MQ带来的提升比管理MQ的成本要大。
 ### 1.3 常见的MQ产品
 
-![image-20240615172702403](img\image-20240615172702403.png)
+![image-20240615172702403](https://gitee.com/SheeepHappy/blog-pic/raw/master/20250408212645190.png)
 
 ### 1.4 RabbitMQ简介
 1. **AMQP协议**：高级消息队列协议。是一个网络协议，是应用层协议的一个开放标准，为面向消息的中间件设计。
 2. RabbitMQ**基础架构**：
-![image-20240615173900766](img\image-20240615173900766.png)
+![image-20240615173900766](https://gitee.com/SheeepHappy/blog-pic/raw/master/20250408212645191.png)
 3. RabbitMQ提供了**6种工作模式**。
 4. JMS：Java消息服务应用程序接口，是JavaEE的技术规范之一。
 
 ## 2 RabbitMQ的工作模式
 ### 2.1 Work queues工作队列模式
-![image-20240618212058854](img\image-20240618212058854.png)
+![image-20240618212058854](https://gitee.com/SheeepHappy/blog-pic/raw/master/20250408212645192.png)
 
 应用场景：适用于任务过重或任务较多的情况。
 
 ### 2.2 Pub/Sub 订阅模式
-![image-20240618213045090](img\image-20240618213045090.png)
+![image-20240618213045090](https://gitee.com/SheeepHappy/blog-pic/raw/master/20250408212645193.png)
 
 1. 交换机（X）：接受生产者的消息，再将消息分发出去。
 3. **交换机的模式**：
@@ -52,10 +52,10 @@
 	- Exchange根据消息的RoutingKey进行判断，只有**队列的RoutingKey与消息的RoutingKey一致**，才会接受到消息。
 	
 	
-	![image-20240620082447657](img\image-20240620082447657.png)
+	![image-20240620082447657](https://gitee.com/SheeepHappy/blog-pic/raw/master/20250408212645194.png)
 
 ### 2.4 Topics 通配符模式
-![image-20240620090002774](img\image-20240620090002774.png)
+![image-20240620090002774](https://gitee.com/SheeepHappy/blog-pic/raw/master/20250408212645195.png)
 
 ## 3 RabbitMQ的高级特性
 ### 3.1 消息持久化
