@@ -1,4 +1,8 @@
-# GoLang 学习
+# Golang 学习
+
+## 学习资料
+
+[《Go 入门指南》 | Go 技术论坛](https://learnku.com/docs/the-way-to-go)
 
 ## 泛型
 
@@ -195,6 +199,46 @@ var fetcher = fakeFetcher{
 			"https://golang.org/pkg/",
 		},
 	},
+}
+
+```
+
+## 并发编程
+
+### 协程池
+
+```go
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+func worker(id int, jobs <-chan int, results chan<- int) {
+	for j := range jobs {
+		fmt.Println("worker", id, "started job", j)
+		time.Sleep(time.Second) // simulate work
+		fmt.Println("worker", id, "finished job", j)
+		results <- j * 2
+	}
+}
+
+func main() {
+	jobs := make(chan int, 100)
+	results := make(chan int, 100)
+	for w := 1; w <= 3; w++ {
+		go worker(w, jobs, results)
+	}
+
+	for j := 1; j <= 9; j++ {
+		jobs <- j
+	}
+	close(jobs)
+
+	for i := 0; i < 9; i++ {
+		<-results
+	}
 }
 
 ```
